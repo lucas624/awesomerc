@@ -32,14 +32,6 @@ beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 -- local theme = "zenburn-custom"
 -- beautiful.init(configpath .. "/themes/" .. theme ..  "/theme.lua")
 
-
--- KEYBINDED COMMANDS (see settings/custom_binds.lua)
-hibernate_cmd = "/usr/sbin/hibernate-ram"
-mute_cmd = "/home/tomas/bin/mute"
-brightness_cmd = "xbacklight"
-raise_volume_cmd = "amixer -q set Master 4+"
-lower_volume_cmd = "amixer -q set Master 4-"
-
 -- Default modkey (DEFAULT Mod4 = WinKey)
 modkey = "Mod4"
 

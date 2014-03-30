@@ -33,21 +33,14 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
-    --[[awful.key({ modkey,           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end),]]
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
-    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
+    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
     awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
     awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
@@ -58,9 +51,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+    awful.key({ modkey            }, "r",     function () mypromptbox[mouse.screen]:run() end),
 
-    awful.key({ modkey }, "x",
+    awful.key({ modkey            }, "x",
               function ()
                   awful.prompt.run({ prompt = "Run Lua code: " },
                   mypromptbox[mouse.screen].widget,
@@ -68,8 +61,9 @@ globalkeys = awful.util.table.join(
                   awful.util.getdir("cache") .. "/history_eval")
               end),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end),
-    awful.key({ modkey, "Shift" }, "Right",
+    awful.key({ modkey            }, "p", function() menubar.show() end),
+    -- Custom
+    awful.key({ modkey, "Shift"   }, "Right",
                   function ()
                       if client.focus then
                           local tag = awful.tag.gettags(client.focus.screen)[awful.tag.getidx(client.focus.tag) + 1]
@@ -79,7 +73,7 @@ globalkeys = awful.util.table.join(
                           end
                      end
                   end),
-    awful.key({ modkey, "Shift" }, "Left",
+    awful.key({ modkey, "Shift"   }, "Left",
                   function ()
                       if client.focus then
                           local tag = awful.tag.gettags(client.focus.screen)[awful.tag.getidx(client.focus.tag) - 1]
@@ -88,7 +82,35 @@ globalkeys = awful.util.table.join(
                               awful.tag.viewprev()
                           end
                       end
-                  end)
+                  end),
+    awful.key({ modkey, "Shift"   }, "d", function () awful.tag.delete() end),
+    awful.key({ modkey, "Shift"   }, "r",
+              function ()
+                awful.prompt.run({ prompt = "New tag name: " },
+                                  mypromptbox[mouse.screen].widget,
+                                  function(new_name)
+                                     if not new_name or #new_name == 0 then
+                                        return
+                                     else
+                                        local screen = mouse.screen
+                                        local tag = awful.tag.selected(screen)
+                                        if tag then
+                                           tag.name = new_name
+                                        end
+                                     end
+                                  end)
+              end),
+    awful.key({ modkey,           }, "a",
+            function ()
+              awful.prompt.run({ prompt = "New tag name: " },
+                mypromptbox[mouse.screen].widget,
+                function(new_name)
+                    props = {selected = true}
+                    t = awful.tag.add(new_name, props)
+                    awful.tag.viewonly(t)
+                end
+              )
+            end)
 )
 
 
