@@ -1,7 +1,7 @@
 local wibox = require("wibox")
 local awful = require("awful")
 local beautiful = require("beautiful")
-
+local radical = require("radical")
 
 -- {{{ Clock widget
   clocktext = wibox.widget.textbox()
@@ -164,6 +164,19 @@ local beautiful = require("beautiful")
     mem_timer = timer({ timeout = 10 })
     mem_timer:connect_signal("timeout", function () update_mem(mempct,membar) end)
     mem_timer:start()
+
+    local menu = radical.context{}
+    menu:add_item {text="Screen 1",button1=function(_menu,item,mods) print("Hello World! ") end}
+    menu:add_item {text="Screen 9"}
+    menu:add_item {text="Sub Menu",sub_menu = function()
+        local smenu = radical.context{}
+        smenu:add_item{text="item 1"}
+        smenu:add_item{text="item 2"}
+        return smenu
+    end}
+
+    membar:set_menu(menu,3) -- 3 = right mouse button, 1 = left mouse button
+
 -- }}}
 
 -- {{{ Volume Indicator
