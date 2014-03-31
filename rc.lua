@@ -19,7 +19,7 @@ local naughty = require("naughty")
  local myerr = require("myrc.error")     -- error reporting
 
  -- VARIABLES
-terminal = "xfce4-terminal "
+terminal = "urxvt "
 editor = "vim "
 editor_cmd = terminal .. " -e " .. editor
 configpath="/home/"..os.getenv("USER").."/.config/awesome/"
