@@ -25,20 +25,30 @@ layouts = {
       --exclusive   = true,
       --icon        = "~net.png",                 -- Use this icon for the tag (uncomment with a real path)
         screen      = screen.count()>1 and 2 or 1,-- Setup on screen 2 if there is more than 1 screen, else on screen 1
-        layout      = awful.layout.suit.max,      -- Use the max layout
+        layout      = awful.layout.suit.floating,      -- Use the max layout
         class = {
             "Opera"         , "Firefox"        , "Rekonq"    , "Dillo"        , "Arora",
             "Chromium"      , "nightly"        , "minefield" , "Google-chrome-stable"}
     } ,
     {
-        name        = "term",                 -- Call the tag "Term"
-        init        = false,                  -- Load the tag on startup
-      --exclusive   = true,                   -- Refuse any other type of clients (by classes)
-        screen      = {1,2},                  -- Create this tag on screen 1 and screen 2
-        layout      = awful.layout.suit.tile, -- Use the tile layout
+        name        = "term",                               -- Call the tag "Term"
+        init        = false,                                -- Load the tag on startup
+        exclusive   = true,                                 -- Refuse any other type of clients (by classes)
+        screen      = {1,2},                                -- Create this tag on screen 1 and screen 2
+        layout      = awful.layout.suit.fair.horizontal,    -- Use the tile layout
         class       = { --Accept the following classes, refuse everything else (because of "exclusive=true")
             "xterm" , "urxvt" , "aterm","URxvt","XTerm","konsole","terminator","gnome-terminal",
             "Xfce4-terminal"
+        }
+    } ,
+    {
+        name        = "subl",                               -- Call the tag "Term"
+        init        = false,                                -- Load the tag on startup
+        exclusive   = true,                                 -- Refuse any other type of clients (by classes)
+        screen      = {1,2},                                -- Create this tag on screen 1 and screen 2
+        layout      = awful.layout.suit.fair.floating,      -- Use the tile layout
+        class       = { --Accept the following classes, refuse everything else (because of "exclusive=true")
+            "sublime-text"
         }
     } ,
     {
@@ -102,5 +112,5 @@ tyrannical.properties.centered = {
     "kcalc", "Qalculate-gtk"
 }
 
-tyrannical.settings.block_children_focus_stealing = true --Block popups ()
+--tyrannical.settings.block_children_focus_stealing = true --Block popups ()
 tyrannical.settings.group_children = true --Force popups/dialogs to have the same tags as the parent client
