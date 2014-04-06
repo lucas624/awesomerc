@@ -11,15 +11,15 @@ local radical = require("radical")
     fd:close()
     local cadena
     if num % 2 == 0 then
-      local fd = io.popen('date "+%e/%m %H:%M"')
+      local fd = io.popen('date "+%d/%m %H:%M"')
       cadena = fd:read("*all")
       fd:close()
     else
-      local fd = io.popen('date "+%e/%m %H %M"')
+      local fd = io.popen('date "+%d/%m %H %M"')
       cadena = fd:read("*all")
       fd:close()
     end
-    clockwidget:set_text(cadena)
+    clockwidget:set_markup("<span font=\"Terminus 8\">"..cadena.."</span>")
   end
 
   clock_timer = timer({ timeout = 1})
@@ -34,7 +34,7 @@ local radical = require("radical")
 
 -- {{{ Create fraxbat widget
   fraxbat = wibox.widget.textbox()
-  fraxbat:set_markup("Battery");
+  fraxbat:set_markup("<span font=\"Terminus 8\">Battery</span>");
 
   -- Globals used by fraxbat
   fraxbat_st= nil
@@ -48,26 +48,26 @@ local radical = require("radical")
      -- Battery Present?
      local fh= io.open("/sys/class/power_supply/".. bat .."/present", "r")
      if fh == nil then
-        tbw:set_markup("No Bat")
+        tbw:set_markup("<span font=\"Terminus 8\">No Bat</span>")
         return(nil)
      end
      local stat= fh:read()
      fh:close()
      if tonumber(stat) < 1 then
-        tbw:set_markup("Bat Not Present")
+        tbw:set_markup("<span font=\"Terminus 8\">Bat Not Present</span>")
         return(nil)
      end
 
      -- Status (Charging, Full or Discharging)
      fh= io.open("/sys/class/power_supply/"..bat.."/status", "r")
      if fh == nil then
-        tbw:set_markup("N/S")
+        tbw:set_markup("<span font=\"Terminus 8\">N/S</span>")
         return(nil)
      end
      stat= fh:read()
      fh:close()
      if stat == 'Full' then
-        tbw:set_markup("100%")
+        tbw:set_markup("<span font=\"Terminus 8\">100%</span>")
         return(nil)
      end
      stat= string.upper(string.sub(stat, 1, 1))
@@ -115,11 +115,11 @@ local radical = require("radical")
                 fraxbat_now= nil
                 fraxbat_est= nil
              end
-             charge=':<'..tag..'>'..tostring(math.ceil((100*now)/full))..'%</'..tag..'>'..est
+             charge='<'..tag..'>'..tostring(math.ceil((100*now)/full))..'%</'..tag..'>'..est
           end
         end
      end
-     tbw:set_markup(stat..charge)
+     tbw:set_markup("<span font=\"Terminus 8\">"..stat..charge.."</span>")
   end
   -- Timers
   battery_timer = timer({ timeout = 5})
@@ -149,7 +149,7 @@ local radical = require("radical")
       local used_memory = tonumber(fd:read("*all"))
       fd:close()
       mem_percent = used_memory/total_memory
-      widgetpct:set_markup(tostring(math.floor(mem_percent*100)) .. "% ")
+      widgetpct:set_markup("<span font=\"Terminus 8\">"..tostring(math.floor(mem_percent*100)) .. "% </span>")
       widgetbar:set_value(mem_percent)
       if mem_percent < 0.7 then
         widgetbar:set_color("#7BF256")
@@ -193,72 +193,59 @@ local radical = require("radical")
       local status = fd:read("*all")
       fd:close()
       local volume = tonumber(string.match(status, "(%d?%d?%d)%%"))
-      widget:set_text(volume .. "%")
-      if volume == 0 then
-        icon_widget:set_image(awful.util.getdir("config") .. "/Icons/volume_down_64.png")
+      widget:set_markup("<span font=\"Terminus 8\">"..volume .. "%</span>")
+      local mute = string.match(status, "%[on%]")
+      if mute == nil then
+        icon_widget:set_image(awful.util.getdir("config") .. "/Icons/no_sound_64.png")
       else
         icon_widget:set_image(awful.util.getdir("config") .. "/Icons/sound_64.png")
       end
     end
 
     volicon:buttons(awful.util.table.join(
-      awful.button({ }, 1, function ()
+      awful.button({ }, 4, function ()
           awful.util.spawn("amixer set Master 1%+")
           update_volume(volwidget,volicon)
         end),
-      awful.button({ }, 3, function () 
+      awful.button({ }, 5, function () 
           awful.util.spawn("amixer set Master 1%-")
           update_volume(volwidget,volicon)
         end),
-      awful.button({"Shift"}, 1, function ()
+      awful.button({"Shift"}, 4, function ()
           awful.util.spawn("amixer set Master 10%+")
           update_volume(volwidget,volicon)
         end),
-      awful.button({"Shift"}, 3, function () 
+      awful.button({"Shift"}, 5, function () 
           awful.util.spawn("amixer set Master 10%-")
           update_volume(volwidget,volicon)
         end),
       awful.button({ }, 2, function () 
-          local fd = io.popen("amixer sget Master")
-          local status = fd:read("*all")
+          local fd = io.popen("amixer set Master toggle")
           fd:close()
-          local volume = tonumber(string.match(status, "(%d?%d?%d)%%"))
-          if volume ~= 0 then
-            awful.util.spawn("amixer set Master 0%")
-          else
-            awful.util.spawn("amixer set Master 100%")
-          end
           update_volume(volwidget,volicon)
         end)
     ))
 
     volwidget:buttons(awful.util.table.join(
-      awful.button({ }, 1, function ()
+      awful.button({ }, 4, function ()
           awful.util.spawn("amixer set Master 1%+")
           update_volume(volwidget,volicon)
         end),
-      awful.button({ }, 3, function () 
+      awful.button({ }, 5, function () 
           awful.util.spawn("amixer set Master 1%-")
           update_volume(volwidget,volicon)
         end),
-      awful.button({"Shift"}, 1, function ()
+      awful.button({"Shift"}, 4, function ()
           awful.util.spawn("amixer set Master 10%+")
           update_volume(volwidget,volicon)
         end),
-      awful.button({"Shift"}, 3, function () 
+      awful.button({"Shift"}, 5, function () 
           awful.util.spawn("amixer set Master 10%-")
           update_volume(volwidget,volicon)
         end),
       awful.button({ }, 2, function () 
-          local fd = io.popen("amixer sget Master")
-          local status = fd:read("*all")
+          local fd = io.popen("amixer set Master toggle")
           fd:close()
-          local volume = tonumber(string.match(status, "(%d?%d?%d)%%"))
-          if volume ~= 0 then
-            awful.util.spawn("amixer set Master 0%")
-          else
-            awful.util.spawn("amixer set Master 100%")
-          end
           update_volume(volwidget,volicon)
         end)
     ))
@@ -297,7 +284,7 @@ local radical = require("radical")
 
         -- Estoy desconectado
         -- widgetbar:set_color()
-        widgettext:set_text("Not connected")
+        widgettext:set_markup("<span font=\"Terminus 8\">Not connected</span>")
         widgeticon:set_image(awful.util.getdir("config") .. "/Icons/wifi_disconected_64.png")
         widgetbar:set_value(0)
       else
@@ -310,7 +297,7 @@ local radical = require("radical")
         fd:close()
         --widgetbar:set_color()
         widgetbar:set_value(quality/100)
-        widgettext:set_text(ssid)
+        widgettext:set_markup("<span font=\"Terminus 8\">"..ssid.."</span>")
         if quality < 25 then
           widgeticon:set_image(awful.util.getdir("config") .. "/Icons/wifi_64_0.png")
         elseif quality < 50 then
@@ -324,7 +311,7 @@ local radical = require("radical")
       local fd = io.popen("wicd-cli -yd |  awk '/IP/ {print $2}'")
       local cadena = fd:read("*all")
       fd:close()
-      widgetip:set_text(cadena)
+      widgetip:set_markup("<span font=\"Terminus 8\">"..cadena.."</span>")
     end
   -- }}}
   -- {{{ Binds
