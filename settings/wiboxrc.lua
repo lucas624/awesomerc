@@ -161,7 +161,7 @@ local radical = require("radical")
         end
       end
     end
-    mem_timer = timer({ timeout = 10 })
+    mem_timer = timer({ timeout = 1 })
     mem_timer:connect_signal("timeout", function () update_mem(mempct,membar) end)
     mem_timer:start()
 
