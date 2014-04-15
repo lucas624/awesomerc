@@ -112,5 +112,5 @@ tyrannical.properties.centered = {
     "kcalc", "Qalculate-gtk"
 }
 
---tyrannical.settings.block_children_focus_stealing = true --Block popups ()
+tyrannical.settings.block_children_focus_stealing = false --Block popups ()
 tyrannical.settings.group_children = true --Force popups/dialogs to have the same tags as the parent client

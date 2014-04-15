@@ -1,5 +1,6 @@
 local awful = require("awful")
 local menubar = require("menubar")
+local naughty = require("naughty")
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
@@ -38,6 +39,10 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey,           }, "q", function()
         local fd = io.popen("if [ $(synclient -l | grep TouchpadOff | awk '{print $3}') == 1 ] ; then synclient touchpadoff=0; else synclient touchpadoff=1; fi")
+        fd:close()
+    end),
+    awful.key({ modkey,           }, "l", function()
+        local fd = io.popen("xscreensaver-command -lock")
         fd:close()
     end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
@@ -114,7 +119,31 @@ globalkeys = awful.util.table.join(
                     awful.tag.viewonly(t)
                 end
               )
-            end)
+            end),
+    awful.key({                   }, "XF86AudioNext", function() 
+        local fd = io.popen("echo next | nc -U /tmp/vlc.sock")
+        fd:close()
+    end),
+    awful.key({                   }, "XF86AudioPrev", function()
+        local fd = io.popen("echo prev | nc -U /tmp/vlc.sock")
+        fd:close()
+    end),
+    awful.key({                   }, "XF86AudioStop", function()
+        local fd = io.popen("echo stop | nc -U /tmp/vlc.sock")
+        fd:close()
+    end),
+    awful.key({                   }, "XF86AudioPlay", function()
+        local fd = io.popen("echo is_playing | nc -U /tmp/vlc.sock")
+        local res = tonumber(fd:read("*all"))
+        fd:close()
+        if res == 1 then
+            local fd = io.popen("echo pause | nc -U /tmp/vlc.sock")
+            fd:close()
+        else
+            local fd = io.popen("echo play | nc -U /tmp/vlc.sock")
+            fd:close()
+        end
+    end)
 )
 
 
