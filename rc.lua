@@ -62,22 +62,3 @@ require("stock.signals")
 
 -- STARTUP apps
 require("settings.startup")
-
--------------------------------- PLUGIN SECTION ------------------------
-
---Logger
---dependencies: http://awesome.naquadah.org/wiki/Naughty_log_watcher 
---local lognotify = require("lognotify")
-
-
---Orglendar plugin
--- uncomment and adjust paths to use
-
---require('plugins.Orglendar.orglendar')
---orglendar.files = { "/home/username/Documents/Notes/work.org",    -- Specify here all files you want to be parsed, separated by comma.
---                     "/home/username/Documents/stuff/home.org" }
---orglendar.register(mytextclock)
-
-
--- wallpaper snippet
---local mywp = require("settings.wallpaper")
