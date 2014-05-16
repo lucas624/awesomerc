@@ -2,6 +2,7 @@ local wibox = require("wibox")
 local awful = require("awful")
 local beautiful = require("beautiful")
 local radical = require("radical")
+local naughty = require("naughty")
 
 -- {{{ Clock widget
   clocktext = wibox.widget.textbox()
@@ -115,11 +116,27 @@ local radical = require("radical")
                 fraxbat_now= nil
                 fraxbat_est= nil
              end
-             charge='<'..tag..'>'..tostring(math.ceil((100*now)/full))..'%</'..tag..'>'..est
+             local charge = math.ceil((100*now)/full)
+             if charge < 10 and stat == "D" then
+                 naughty.notify({
+                    --position = "top_left"|"top_right"|"bottom_left"|"bottom_right",
+                    --timeout = 5,
+                    icon    = awful.util.getdir("config") .. "/Icons/warning_64.png",
+                    --fg    = "#ffggcc",
+                    --bg    = "#bbggcc",
+                    --screen = 1,
+                    --ontop = false, 
+                    --run   = function () awful.util.spawn("wicd-client") end
+                    preset  = naughty.config.presets.critical,
+                    text    = "Te estas quedando sin bateria",
+                    title   = "Conectá la batería"
+                })
+            end
+            charge_text = '<'..tag..'>'..tostring(charge)..'%</'..tag..'>'..est
           end
         end
      end
-     tbw:set_markup("<span font=\"Terminus 8\">"..stat..charge.."</span>")
+     tbw:set_markup("<span font=\"Terminus 8\">"..stat..charge_text.."</span>")
   end
   -- Timers
   battery_timer = timer({ timeout = 5})
