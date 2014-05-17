@@ -21,13 +21,9 @@ editor = "vim "
 editor_cmd = terminal .. " -e " .. editor
 configpath="/home/"..os.getenv("USER").."/.config/awesome/"
 
--- THEME
--- default theme
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
-
 -- CUSTOM THEMES - pick name from themes/
--- local theme = "zenburn-custom"
--- beautiful.init(configpath .. "/themes/" .. theme ..  "/theme.lua")
+local theme = "foo"
+beautiful.init(configpath .. "/themes/" .. theme ..  "/theme.lua")
 
 -- Default modkey (DEFAULT Mod4 = WinKey)
 modkey = "Mod4"
