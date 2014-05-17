@@ -19,7 +19,7 @@ local naughty = require("naughty")
       cadena = fd:read("*all")
       fd:close()
     end
-    clockwidget:set_markup("<span font=\"Terminus 8\">"..cadena.."</span>")
+    clockwidget:set_markup("<span>"..cadena.."</span>")
   end
 
   clock_timer = timer({ timeout = 1})
@@ -34,7 +34,7 @@ local naughty = require("naughty")
 
 -- {{{ Create fraxbat widget
   fraxbat = wibox.widget.textbox()
-  fraxbat:set_markup("<span font=\"Terminus 8\">Battery</span>");
+  fraxbat:set_markup("<span>Battery</span>");
 
   -- Globals used by fraxbat
   fraxbat_st= nil
@@ -48,26 +48,26 @@ local naughty = require("naughty")
      -- Battery Present?
      local fh= io.open("/sys/class/power_supply/".. bat .."/present", "r")
      if fh == nil then
-        tbw:set_markup("<span font=\"Terminus 8\">No Bat</span>")
+        tbw:set_markup("<span>No Bat</span>")
         return(nil)
      end
      local stat= fh:read()
      fh:close()
      if tonumber(stat) < 1 then
-        tbw:set_markup("<span font=\"Terminus 8\">Bat Not Present</span>")
+        tbw:set_markup("<span>Bat Not Present</span>")
         return(nil)
      end
 
      -- Status (Charging, Full or Discharging)
      fh= io.open("/sys/class/power_supply/"..bat.."/status", "r")
      if fh == nil then
-        tbw:set_markup("<span font=\"Terminus 8\">N/S</span>")
+        tbw:set_markup("<span>N/S</span>")
         return(nil)
      end
      stat= fh:read()
      fh:close()
      if stat == 'Full' then
-        tbw:set_markup("<span font=\"Terminus 8\">100%</span>")
+        tbw:set_markup("<span>100%</span>")
         return(nil)
      end
      stat= string.upper(string.sub(stat, 1, 1))
@@ -135,7 +135,7 @@ local naughty = require("naughty")
           end
         end
      end
-     tbw:set_markup("<span font=\"Terminus 8\">"..stat..charge_text.."</span>")
+     tbw:set_markup("<span>"..stat..charge_text.."</span>")
   end
   -- Timers
   battery_timer = timer({ timeout = 5})
@@ -165,7 +165,7 @@ local naughty = require("naughty")
       local used_memory = tonumber(fd:read("*all"))
       fd:close()
       mem_percent = used_memory/total_memory
-      widgetpct:set_markup("<span font=\"Terminus 8\">"..tostring(math.floor(mem_percent*100)) .. "% </span>")
+      widgetpct:set_markup("<span>"..tostring(math.floor(mem_percent*100)) .. "% </span>")
       widgetbar:set_value(mem_percent)
       if mem_percent < 0.7 then
         widgetbar:set_color("#7BF256")
@@ -197,7 +197,7 @@ local naughty = require("naughty")
       local status = fd:read("*all")
       fd:close()
       local volume = tonumber(string.match(status, "(%d?%d?%d)%%"))
-      widget:set_markup("<span font=\"Terminus 8\">"..volume .. "%</span>")
+      widget:set_markup("<span>"..volume .. "%</span>")
       local mute = string.match(status, "%[on%]")
       if mute == nil then
         icon_widget:set_image(awful.util.getdir("config") .. "/Icons/no_sound_64.png")
@@ -288,7 +288,7 @@ local naughty = require("naughty")
 
         -- Estoy desconectado
         -- widgetbar:set_color()
-        widgettext:set_markup("<span font=\"Terminus 8\">Not connected</span>")
+        widgettext:set_markup("<span>Not connected</span>")
         widgeticon:set_image(awful.util.getdir("config") .. "/Icons/wifi_disconected_64.png")
         widgetbar:set_value(0)
       else
@@ -301,7 +301,7 @@ local naughty = require("naughty")
         fd:close()
         --widgetbar:set_color()
         widgetbar:set_value(quality/100)
-        widgettext:set_markup("<span font=\"Terminus 8\">"..ssid.."</span>")
+        widgettext:set_markup("<span>"..ssid.."</span>")
         if quality < 25 then
           widgeticon:set_image(awful.util.getdir("config") .. "/Icons/wifi_64_0.png")
         elseif quality < 50 then
@@ -315,7 +315,7 @@ local naughty = require("naughty")
       local fd = io.popen("wicd-cli -yd |  awk '/IP/ {print $2}'")
       local cadena = fd:read("*all")
       fd:close()
-      widgetip:set_markup("<span font=\"Terminus 8\">"..cadena.."</span>")
+      widgetip:set_markup("<span>"..cadena.."</span>")
     end
   -- }}}
   -- {{{ Binds
