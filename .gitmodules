@@ -1,6 +1,9 @@
 [submodule "tyrannical"]
 	path = tyrannical
 	url = git@github.com:Elv13/tyrannical.git
-[submodule "radical"]
-	path = radical
-	url = git@github.com:Elv13/radical.git
+[submodule "awesome-themes"]
+	path = awesome-themes
+	url = git@github.com:ludat/awesome-themes.git
+[submodule "themes"]
+	path = themes
+	url = git@github.com:ludat/awesome-themes.git
