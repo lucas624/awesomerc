@@ -29,7 +29,7 @@ local naughty = require("naughty")
 
 -- {{{ Simple Separator
   myseparator = wibox.widget.textbox()
-  myseparator:set_text(" | ")
+  myseparator:set_text("  ")
 -- }}}
 
 -- {{{ Create fraxbat widget
@@ -144,10 +144,6 @@ local naughty = require("naughty")
 -- }}}
 
 -- {{{ Mem Usage
-  -- Icon
-    ramicon = wibox.widget.imagebox()--widget({type = "imagebox" })
-    ramicon:set_image(beautiful.widget_mem)
-    ramicon.resize = false
   -- Percentage
     mempct = wibox.widget.textbox()
   -- Meter
@@ -407,7 +403,6 @@ for s = 1, screen.count() do
     right_layout:add(myseparator)
     right_layout:add(clocktext)
     right_layout:add(myseparator)
-    right_layout:add(ramicon)
     right_layout:add(mempct)
     right_layout:add(memmargin)
     right_layout:add(myseparator)
