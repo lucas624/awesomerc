@@ -268,29 +268,18 @@ local naughty = require("naughty")
   -- {{ Ip
     ip = wibox.widget.textbox()
   -- }}
-  -- {{ Signal power
-    wifibar = awful.widget.progressbar()
-    wifibar:set_width(7)
-    wifibar:set_vertical(true)
-    wifibar:set_background_color("#3F3F3F")
-    wifibar:set_color("#FF6565" )
-    wifimargin = wibox.layout.margin(wifibar , 0, 1, 1, 1)
-  -- }}
   -- {{ Wifi ESSID
     wifissid = wibox.widget.textbox()
   -- }}
   -- {{ Update function
-    function update_wifi( widgetbar,widgettext,widgeticon,widgetip )
+    function update_wifi(widgettext, widgeticon, widgetip )
       local fd = io.popen("wicd-cli -yd | head -n 1 | awk '{print $2}'")
       local cadena = fd:read("*all")
       fd:close()
       if cadena:find("wireless") or cadena:find("None") then
-
         -- Estoy desconectado
-        -- widgetbar:set_color()
         widgettext:set_markup("<span>Not connected</span>")
         widgeticon:set_image(awful.util.getdir("config") .. "/Icons/wifi_disconected_64.png")
-        widgetbar:set_value(0)
       else
         --Estoy conectado
         local fd = io.popen("wicd-cli -y -p Quality")
@@ -299,8 +288,6 @@ local naughty = require("naughty")
         local fd = io.popen("wicd-cli -y -p Essid")
         local ssid = fd:read("*all")
         fd:close()
-        --widgetbar:set_color()
-        widgetbar:set_value(quality/100)
         widgettext:set_markup("<span>"..ssid.."</span>")
         if quality < 25 then
           widgeticon:set_image(awful.util.getdir("config") .. "/Icons/wifi_64_0.png")
@@ -327,7 +314,7 @@ local naughty = require("naughty")
   -- }}}
   -- {{{ Timers 
     wifi_timer = timer({ timeout = 2 })
-    wifi_timer:connect_signal("timeout", function() update_wifi(wifibar, wifissid, wifiicon, ip) end)
+    wifi_timer:connect_signal("timeout", function() update_wifi(wifissid, wifiicon, ip) end)
     wifi_timer:start()
   -- }}}
 -- }}}
@@ -412,7 +399,6 @@ for s = 1, screen.count() do
     --right_layout:add(netwidget)
     right_layout:add(ip)
     right_layout:add(myseparator)
-    right_layout:add(wifimargin)
     right_layout:add(wifiicon)
     right_layout:add(wifissid)
     right_layout:add(myseparator)
