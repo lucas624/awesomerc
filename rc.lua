@@ -22,7 +22,7 @@ editor_cmd = terminal .. " -e " .. editor
 configpath="/home/"..os.getenv("USER").."/.config/awesome/"
 
 -- CUSTOM THEMES - pick name from themes/
-local theme = "foo"
+local theme = "fool"
 -- local theme = "powerarrow-darker"
 -- local theme = "sunjack"
 beautiful.init(configpath .. "/themes/" .. theme ..  "/theme.lua")

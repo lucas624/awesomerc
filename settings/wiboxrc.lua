@@ -29,7 +29,8 @@ local naughty = require("naughty")
 
 -- {{{ Simple Separator
   myseparator = wibox.widget.textbox()
-  myseparator:set_text("  ")
+  -- myseparator:set_text("  ")
+  myseparator:set_text("  ")
 -- }}}
 
 -- {{{ Create fraxbat widget
