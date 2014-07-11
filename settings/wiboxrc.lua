@@ -337,7 +337,7 @@ end
 
         if devs[defaultRoute] == "UP" then
             --Estoy conectado
-            local fd = io.popen("iw dev wlp3s0 link | awk ' BEGIN { ORS = \",\"  }/SSID|signal/ {print $2}'")
+            local fd = io.popen("iw dev "..defaultRoute.." link | awk ' BEGIN { ORS = \",\"  }/SSID|signal/ {print $2}'")
             local ssid, quality_dB = fd:read("*all"):match("([^,]+),([^,]+)")
             fd:close()
             local quality = math.ceil(100 - math.abs(math.abs(tonumber(quality_dB)) - 35) / 60 * 100)
@@ -351,7 +351,7 @@ end
             else
                 widgeticon:set_image(awful.util.getdir("config") .. "/Icons/wifi_64_100.png")
             end
-            local fd = io.popen("ip addr show dev wlp3s0 | awk '/inet / {print $2}'")
+            local fd = io.popen("ip addr show dev "..defaultRoute.." | awk '/inet / {print $2}'")
             local cadena = fd:read("*all")
             fd:close()
             widgetip:set_markup("<span>"..cadena.."</span>")
