@@ -268,11 +268,74 @@ local naughty = require("naughty")
     networkssid = wibox.widget.textbox()
     -- }}
     -- {{ Update function
+function table.val_to_str ( v )
+  if "string" == type( v ) then
+    v = string.gsub( v, "\n", "\\n" )
+    if string.match( string.gsub(v,"[^'\"]",""), '^"+$' ) then
+      return "'" .. v .. "'"
+    end
+    return '"' .. string.gsub(v,'"', '\\"' ) .. '"'
+  else
+    return "table" == type( v ) and table.tostring( v ) or
+      tostring( v )
+  end
+end
+
+function table.key_to_str ( k )
+  if "string" == type( k ) and string.match( k, "^[_%a][_%a%d]*$" ) then
+    return k
+  else
+    return "[" .. table.val_to_str( k ) .. "]"
+  end
+end
+
+function table.tostring( tbl )
+  local result, done = {}, {}
+  for k, v in ipairs( tbl ) do
+    table.insert( result, table.val_to_str( v ) )
+    done[ k ] = true
+  end
+  for k, v in pairs( tbl ) do
+    if not done[ k ] then
+      table.insert( result,
+        table.key_to_str( k ) .. "=" .. table.val_to_str( v ) )
+    end
+  end
+  return "{" .. table.concat( result, "," ) .. "}"
+end
     function update_network(widgettext, widgeticon, widgetip )
-        local fd = io.popen("ip route | awk '/default/ {print $5}'")
-        local dev = fd:read("*all")
+        local fd = io.popen("ip link | awk '/^[0-9]/ {print $2,$9}'")
+        local dev_raw = fd:read("*all")
         fd:close()
-        if dev:len() then
+
+        local sep = "\n"
+        local fields = {dev_raw:match((dev_raw:gsub("[^"..sep.."]*"..sep, "([^"..sep.."]*)"..sep)))}
+
+        local devs = {}
+        for i, field in ipairs(fields) do
+            local dev_name
+            local dev_state
+            dev_name, dev_state = field:match(("([^:]*)..(%w*)"))
+            devs[dev_name] = dev_state
+        end
+
+        local fd = io.popen("ip route | awk '/default/ {print $5}'")
+        local defaultRoute = fd:read("*all")
+        defaultRoute = defaultRoute:match(("(%w*)"))
+        fd:close()
+        
+        --naughty.notify({
+        --    text    = "\"".. defaultRoute .."\"",
+        --    title   = "defaultRoute:"
+        --})
+
+        --naughty.notify({
+        --    text    = "\"".. table.tostring(devs) .."\"",
+        --    title   = "Devs:"
+        --})
+        
+
+        if devs[defaultRoute] == "UP" then
             --Estoy conectado
             local fd = io.popen("iw dev wlp3s0 link | awk ' BEGIN { ORS = \",\"  }/SSID|signal/ {print $2}'")
             local ssid, quality_dB = fd:read("*all"):match("([^,]+),([^,]+)")
