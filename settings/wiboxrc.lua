@@ -338,9 +338,27 @@ end
         if devs[defaultRoute] == "UP" then
             --Estoy conectado
             local fd = io.popen("iw dev "..defaultRoute.." link | awk ' BEGIN { ORS = \",\"  }/SSID|signal/ {print $2}'")
-            local ssid, quality_dB = fd:read("*all"):match("([^,]+),([^,]+)")
+            local ssid, quality_dB_str = fd:read("*all"):match("([^,]+),([^,]+)")
             fd:close()
-            local quality = math.ceil(100 - math.abs(math.abs(tonumber(quality_dB)) - 35) / 60 * 100)
+            local quality_dB_int = tonumber(quality_dB_str)
+            local quality
+            if quality_dB_int == nil then
+                naughty.notify({
+                    --position = "top_left"|"top_right"|"bottom_left"|"bottom_right",
+                    --timeout = 5,
+                    icon    = awful.util.getdir("config") .. "/Icons/warning_64.png",
+                    --fg    = "#ffggcc",
+                    --bg    = "#bbggcc",
+                    --screen = 1,
+                    --ontop = false, 
+                    --run   = function () awful.util.spawn("wicd-client") end
+                    preset  = naughty.config.presets.critical,
+                    text    = quality_dB_str,
+                    title   = "Error de wifi:"
+                })
+            else
+                quality = math.ceil(100 - math.abs(quality_dB_int + 35) / 60 * 100)
+            end
             widgettext:set_markup("<span>  "..ssid.."</span>")
             if quality < 25 then
                 widgeticon:set_image(awful.util.getdir("config") .. "/Icons/wifi_64_0.png")
@@ -358,6 +376,7 @@ end
         else
             -- Estoy desconectado
             widgettext:set_markup("<span>Not connected</span>")
+            widgetip:set_markup("<span></span>")
             widgeticon:set_image(awful.util.getdir("config") .. "/Icons/wifi_disconected_64.png")
         end
     end
