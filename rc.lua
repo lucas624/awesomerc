@@ -22,7 +22,7 @@ editor_cmd = terminal .. " -e " .. editor
 configpath="/home/"..os.getenv("USER").."/.config/awesome/"
 
 -- CUSTOM THEMES - pick name from themes/
-local theme = "bamboo"
+local theme = "fool"
 beautiful.init(configpath .. "/themes/" .. theme ..  "/theme.lua")
 
 -- Default modkey (DEFAULT Mod4 = WinKey)
