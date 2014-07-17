@@ -28,7 +28,7 @@ layouts = {
         layout      = awful.layout.suit.floating,      -- Use the max layout
         class = {
             "Opera"         , "Firefox"        , "Rekonq"    , "Dillo"        , "Arora",
-            "Chromium"      , "nightly"        , "minefield" , "Google-chrome-stable"}
+            "Chromium"      , "nightly"        , "Dwb"       , "Google-chrome-stable"}
     } ,
     {
         name        = "term",                               -- Call the tag "Term"
@@ -39,16 +39,6 @@ layouts = {
         class       = { --Accept the following classes, refuse everything else (because of "exclusive=true")
             "xterm" , "urxvt" , "aterm","URxvt","XTerm","konsole","terminator","gnome-terminal",
             "Xfce4-terminal"
-        }
-    } ,
-    {
-        name        = "subl",                               -- Call the tag "Term"
-        init        = false,                                -- Load the tag on startup
-        exclusive   = true,                                 -- Refuse any other type of clients (by classes)
-        screen      = {1,2},                                -- Create this tag on screen 1 and screen 2
-        layout      = awful.layout.suit.fair.floating,      -- Use the tile layout
-        class       = { --Accept the following classes, refuse everything else (because of "exclusive=true")
-            "sublime-text"
         }
     } ,
     {
@@ -71,7 +61,7 @@ layouts = {
                          -- The tag can be used on both screen, but only one at once
         layout      = awful.layout.suit.max                          ,
         class ={ 
-            "Kate", "KDevelop", "Codeblocks", "Code::Blocks" , "DDD", "kate4"}
+            "Kate", "KDevelop", "Codeblocks", "Code::Blocks" , "DDD", "kate4", "Eclipse"}
     } ,
     {
         name        = "doc",
@@ -95,11 +85,10 @@ tyrannical.properties.intrusive = {
 
 -- Ignore the tiled layout for the matching clients
 tyrannical.properties.floating = {
-    "MPlayer"      , "pinentry"        , "ksnapshot"  , "pinentry"     , "gtksu"          ,
+    "pinentry"        , "ksnapshot"  , "pinentry"     , "gtksu"          ,"Qalculate-gtk" ,
     "xine"         , "feh"             , "kmix"       , "kcalc"        , "xcalc"          ,
     "yakuake"      , "Select Color$"   , "kruler"     , "kcolorchooser", "Paste Special"  ,
-    "New Form"     , "Insert Picture"  , "kcharselect", "mythfrontend" , "plasmoidviewer" ,
-    "Qalculate-gtk"
+    "New Form"     , "Insert Picture"  , "kcharselect", "mythfrontend" , "plasmoidviewer"
 }
 
 -- Make the matching clients (by classes) on top of the default layout
