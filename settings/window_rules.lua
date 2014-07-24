@@ -9,6 +9,8 @@ awful.rules.rules = {
                      focus = awful.client.focus.filter,
                      keys = clientkeys,
                      buttons = clientbuttons } },
+    { rule = { class = "Google-chrome-stable" },
+      properties = { maximized_vertical = true, maximized_horizontal = true } },
     { rule = { class = "MPlayer" },
       properties = { floating = true } },
     { rule = { class = "pinentry" },
