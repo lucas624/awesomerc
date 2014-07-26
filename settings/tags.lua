@@ -80,7 +80,7 @@ tyrannical.properties.intrusive = {
     "ksnapshot"     , "pinentry"       , "gtksu"     , "kcalc"        , "xcalc"               ,
     "feh"           , "Gradient editor", "About KDE" , "Paste Special", "Background color"    ,
     "kcolorchooser" , "plasmoidviewer" , "Xephyr"    , "kruler"       , "plasmaengineexplorer",
-    "Qalculate-gtk" 
+    "Qalculate-gtk" , "Pavucontrol"
 }
 
 -- Ignore the tiled layout for the matching clients
@@ -88,17 +88,18 @@ tyrannical.properties.floating = {
     "pinentry"        , "ksnapshot"  , "pinentry"     , "gtksu"          ,"Qalculate-gtk" ,
     "xine"         , "feh"             , "kmix"       , "kcalc"        , "xcalc"          ,
     "yakuake"      , "Select Color$"   , "kruler"     , "kcolorchooser", "Paste Special"  ,
-    "New Form"     , "Insert Picture"  , "kcharselect", "mythfrontend" , "plasmoidviewer"
+    "New Form"     , "Insert Picture"  , "kcharselect", "mythfrontend" , "plasmoidviewer" ,
+    "Pavucontrol"
 }
 
 -- Make the matching clients (by classes) on top of the default layout
 tyrannical.properties.ontop = {
-    "Xephyr"       , "ksnapshot"       , "kruler"     , "Qalculate-gtk"
+    "Xephyr"       , "ksnapshot"       , "kruler"     , "Qalculate-gtk", "Pavucontrol"
 }
 
 -- Force the matching clients (by classes) to be centered on the screen on init
 tyrannical.properties.centered = {
-    "kcalc", "Qalculate-gtk"
+    "kcalc", "Qalculate-gtk", "Pavucontrol"
 }
 
 tyrannical.settings.block_children_focus_stealing = false --Block popups ()
