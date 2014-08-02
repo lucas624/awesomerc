@@ -257,17 +257,17 @@ local naughty = require("naughty")
 -- }}}
 
 -- {{{ Network indicator
-    -- {{ Wifi icon
+    -- {{{ Wifi icon
     networkicon = wibox.widget.imagebox()
     networkicon:set_image(awful.util.getdir("config") .. "/Icons/wifi_64_0.png")
-    -- }}
-    -- {{ Ip
+    -- }}}
+    -- {{{ Ip
     ip = wibox.widget.textbox()
-    -- }}
-    -- {{ Wifi ESSID
+    -- }}}
+    -- {{{ Wifi ESSID
     networkssid = wibox.widget.textbox()
-    -- }}
-    -- {{ Update function
+    -- }}}
+    -- {{{ Update function
 function table.val_to_str ( v )
   if "string" == type( v ) then
     v = string.gsub( v, "\n", "\\n" )
@@ -345,16 +345,16 @@ end
             if quality_dB_int == nil then
                 naughty.notify({
                     --position = "top_left"|"top_right"|"bottom_left"|"bottom_right",
-                    --timeout = 5,
-                    icon    = awful.util.getdir("config") .. "/Icons/warning_64.png",
-                    --fg    = "#ffggcc",
-                    --bg    = "#bbggcc",
-                    --screen = 1,
-                    --ontop = false, 
-                    --run   = function () awful.util.spawn("wicd-client") end
-                    preset  = naughty.config.presets.critical,
-                    text    = quality_dB_str,
-                    title   = "Error de wifi:"
+                    --timeout  = 5,
+                    icon       = awful.util.getdir("config") .. "/Icons/warning_64.png",
+                    --fg       = "#ffggcc",
+                    --bg       = "#bbggcc",
+                    --screen   = 1,
+                    --ontop    = false,
+                    --run      = function () awful.util.spawn("wicd-client") end
+                    preset     = naughty.config.presets.critical,
+                    text       = wifi_error
+                    title      = "Error de wifi:"
                 })
             else
                 quality = math.ceil(100 - math.abs(quality_dB_int + 35) / 60 * 100)
