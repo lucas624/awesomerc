@@ -353,7 +353,7 @@ end
                     --ontop    = false,
                     --run      = function () awful.util.spawn("wicd-client") end
                     preset     = naughty.config.presets.critical,
-                    text       = wifi_error
+                    text       = wifi_error,
                     title      = "Error de wifi:"
                 })
             else
