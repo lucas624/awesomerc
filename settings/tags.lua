@@ -24,6 +24,7 @@ layouts = {
         init      = true,
         screen    = screen.count()>1 and 2 or 1, -- Setup on screen 2 if there is more than 1 screen, else on screen 1
         layout    = awful.layout.suit.floating,  -- Use the max layout
+        exclusive = true,
         class     = {
             "Opera"    , "Firefox" , "Rekonq" , "Dillo"                , "Arora" ,
             "Chromium" , "nightly" , "Dwb"    , "Google-chrome-stable"
@@ -32,7 +33,7 @@ layouts = {
     {
         name      = "term",                            -- Call the tag "Term"
         init      = false,                             -- Load the tag on startup
-        exclusive = false,                             -- Refuse any other type of clients (by classes)
+        exclusive = true,                             -- Refuse any other type of clients (by classes)
         screen    = {1,2},                             -- Create this tag on screen 1 and screen 2
         layout    = awful.layout.suit.fair.horizontal, -- Use the tile layout
         class     = {                                  -- Accept the following classes, refuse everything else (because of "exclusive        = true")
