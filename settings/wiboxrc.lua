@@ -1,7 +1,9 @@
+-- {{{ Imports
 local wibox = require("wibox")
 local awful = require("awful")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
+-- }}}
 
 -- {{{ Clock widget
     clocktext = wibox.widget.textbox()
@@ -394,7 +396,7 @@ end
     -- }}}
 -- }}}
 
--- Create a wibox for each screen and add it
+-- {{{ Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
 mylayoutbox = {}
