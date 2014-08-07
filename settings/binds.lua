@@ -121,28 +121,20 @@ globalkeys = awful.util.table.join(
               )
             end),
     awful.key({                   }, "XF86AudioNext", function() 
-        local fd = io.popen("echo next | nc -U /tmp/vlc.sock")
+        local fd = io.popen("mpc next")
         fd:close()
     end),
     awful.key({                   }, "XF86AudioPrev", function()
-        local fd = io.popen("echo prev | nc -U /tmp/vlc.sock")
+        local fd = io.popen("mpc prev")
         fd:close()
     end),
     awful.key({                   }, "XF86AudioStop", function()
-        local fd = io.popen("echo stop | nc -U /tmp/vlc.sock")
+        local fd = io.popen("mpc stop")
         fd:close()
     end),
     awful.key({                   }, "XF86AudioPlay", function()
-        local fd = io.popen("echo is_playing | nc -U /tmp/vlc.sock")
-        local res = tonumber(fd:read("*all"))
+        local fd = io.popen("mpc toggle")
         fd:close()
-        if res == 1 then
-            local fd = io.popen("echo pause | nc -U /tmp/vlc.sock")
-            fd:close()
-        else
-            local fd = io.popen("echo play | nc -U /tmp/vlc.sock")
-            fd:close()
-        end
     end)
 )
 
