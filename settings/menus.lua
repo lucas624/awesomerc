@@ -1,8 +1,9 @@
-  local awful = require("awful")
-  local beautiful = require("beautiful")
-  local menubar = require("menubar")
-
+local awful = require("awful")
+local beautiful = require("beautiful")
+local menubar = require("menubar")
+require("localdata.autogen_menus")
 -- Create a laucher widget and a main menu
+-- Menus {{{
 myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
    { "edit config", editor_cmd .. " " .. awesome.conffile },
@@ -11,35 +12,23 @@ myawesomemenu = {
 }
 
 menueditors = {
-    {"Sublime", "subl"},
     {"Vim", terminal .. " -e vim"},
-    {"Vi", terminal .. " -e vi"},
-    {"Nano", terminal .. " -e nano"},
+    {"Chrome", "google-chrome-stable"},
+    {"Chromium", "chromium"},
+    {"Firefox", "firefox"},
 }
 
-menuweb = {
-  {"Chrome", "google-chrome-stable"},
-  {"Chromium", "chromium"},
-  {"Firefox", "firefox"},
-}
-
-mymainmenu = awful.menu({ items = { { "Archlinux" },
-                                    { "Editores", menueditors },
-                                    { "Internet", menuweb },
-                                    { "Oficina", menuoffice },
-                                    { "Desarrollo", menudevelop },
-                                    { "Awesome", myawesomemenu },
-                                    { "Configurar", menuconf },
-                                    { "Sistema", menusys },
-                                    { "Terminal", terminal },
-                                    { "Anki", "anki" },
-                                    { "Chrome", "google-chrome-stable" },
-                                    { "Spacefm", "spacefm" },
-                                    { "Reiniciar", "systemctl reboot" },
-                                    { "Apagar", "systemctl poweroff" }
-                                  }
-                        })
-
+mymainmenu = awful.menu({ items = {
+    { "Archlinux" },
+    { "Favorites"   , menueditors },
+    { "Applications", xdgmenu },
+    { "Awesome"    , myawesomemenu } ,
+    { "Configurar" , menuconf },
+    { "Sistema"    , menusys },
+    { "Reiniciar"  , "systemctl reboot" },
+    { "Apagar"     , "systemctl poweroff" }
+}})
+--  }}}
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
