@@ -2,7 +2,7 @@ local awful = require("awful")
 local menubar = require("menubar")
 local naughty = require("naughty")
 
--- {{{ Mouse bindings
+-- Mouse bindings {{{
 root.buttons(awful.util.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
@@ -10,32 +10,31 @@ root.buttons(awful.util.table.join(
 ))
 -- }}}
 
--- {{{ Key bindings
+-- Key bindings {{{
 globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
-    awful.key({ modkey,           }, "Tab",
-        function ()
-            awful.client.focus.byidx( 1)
-            if client.focus then client.focus:raise() end
-        end),
-    awful.key({ modkey, "Shift"   }, "Tab",
-        function ()
-            awful.client.focus.byidx(-1)
-            if client.focus then client.focus:raise() end
-        end),
+    awful.key({ modkey,           }, "Tab", function ()
+        awful.client.focus.byidx( 1)
+        if client.focus then client.focus:raise() end
+    end),
+    awful.key({ modkey, "Shift"   }, "Tab", function ()
+        awful.client.focus.byidx(-1)
+        if client.focus then client.focus:raise() end
+    end),
     awful.key({ modkey,           }, "w", function () mymainmenu:show() end),
 
-    -- Layout manipulation
+    -- Layout manipulation {{{
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
+    -- }}}
 
-    -- Standard program
+    -- Standard program {{{
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey,           }, "q", function()
         local fd = io.popen("if [ $(synclient -l | grep TouchpadOff | awk '{print $3}') == 1 ] ; then synclient touchpadoff=0; else synclient touchpadoff=1; fi")
@@ -58,84 +57,172 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
+    -- }}}
 
-    -- Prompt
+    -- Prompt {{{
     awful.key({ modkey            }, "r",     function () mypromptbox[mouse.screen]:run() end),
 
-    awful.key({ modkey            }, "x",
-              function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
-                  mypromptbox[mouse.screen].widget,
-                  awful.util.eval, nil,
-                  awful.util.getdir("cache") .. "/history_eval")
-              end),
-    -- Menubar
+    awful.key({ modkey            }, "x", function ()
+        awful.prompt.run({ prompt = "Run Lua code: " },
+        mypromptbox[mouse.screen].widget,
+        awful.util.eval, nil,
+        awful.util.getdir("cache") .. "/history_eval")
+    end),
+    -- }}}
+
+    -- Menubar {{{
     awful.key({ modkey            }, "p", function() menubar.show() end),
-    -- Custom
-    awful.key({ modkey, "Shift"   }, "Right",
-                  function ()
-                      if client.focus then
-                          local tag = awful.tag.gettags(client.focus.screen)[awful.tag.getidx(client.focus.tag) + 1]
-                          if tag then
-                              awful.client.movetotag(tag)
-                              awful.tag.viewnext()
-                          end
-                     end
-                  end),
-    awful.key({ modkey, "Shift"   }, "Left",
-                  function ()
-                      if client.focus then
-                          local tag = awful.tag.gettags(client.focus.screen)[awful.tag.getidx(client.focus.tag) - 1]
-                          if tag then
-                              awful.client.movetotag(tag)
-                              awful.tag.viewprev()
-                          end
-                      end
-                  end),
+    -- }}}
+
+    -- Custom {{{
+    awful.key({ modkey, "Shift"   }, "Right", function ()
+        if client.focus then
+            local tag = awful.tag.gettags(client.focus.screen)[awful.tag.getidx(client.focus.tag) + 1]
+            if tag then
+                awful.client.movetotag(tag)
+                awful.tag.viewnext()
+            end
+        end
+    end),
+    awful.key({ modkey, "Shift"   }, "Left", function ()
+        if client.focus then
+            local tag = awful.tag.gettags(client.focus.screen)[awful.tag.getidx(client.focus.tag) - 1]
+            if tag then
+                awful.client.movetotag(tag)
+                awful.tag.viewprev()
+            end
+        end
+    end),
     awful.key({ modkey, "Shift"   }, "d", function () awful.tag.delete() end),
-    awful.key({ modkey, "Shift"   }, "r",
-              function ()
-                awful.prompt.run({ prompt = "New tag name: " },
-                                  mypromptbox[mouse.screen].widget,
-                                  function(new_name)
-                                     if not new_name or #new_name == 0 then
-                                        return
-                                     else
-                                        local screen = mouse.screen
-                                        local tag = awful.tag.selected(screen)
-                                        if tag then
-                                           tag.name = new_name
-                                        end
-                                     end
-                                  end)
-              end),
-    awful.key({ modkey,           }, "a",
-            function ()
-              awful.prompt.run({ prompt = "New tag name: " },
-                mypromptbox[mouse.screen].widget,
-                function(new_name)
-                    props = {selected = true}
-                    t = awful.tag.add(new_name, props)
-                    awful.tag.viewonly(t)
+    awful.key({ modkey, "Shift"   }, "r", function ()
+        awful.prompt.run(
+            { prompt = "New tag name: " },
+            mypromptbox[mouse.screen].widget,
+            function(new_name)
+                if not new_name or #new_name == 0 then
+                    return
+                else
+                    local screen = mouse.screen
+                    local tag = awful.tag.selected(screen)
+                    if tag then
+                        tag.name = new_name
+                    end
                 end
-              )
-            end),
+            end
+        )
+    end),
+    awful.key({ modkey,           }, "a", function ()
+        awful.prompt.run(
+            { prompt = "New tag name: " },
+            mypromptbox[mouse.screen].widget,
+            function(new_name)
+                props = {selected = true}
+                t = awful.tag.add(new_name, props)
+                awful.tag.viewonly(t)
+            end
+        )
+    end),
+    -- Audio hotkeys {{{
     awful.key({                   }, "XF86AudioNext", function() 
-        local fd = io.popen("mpc next")
+        local fd = io.popen('echo "next" | nc localhost 6600')
+        local response = fd:read("*all")
+        local result = response:match(".*\n(%u+)\n")
+        if not result then
+            naughty.notify({
+                icon    = awful.util.getdir("config") .. "/Icons/warning_64.png",
+                preset  = naughty.config.presets.critical,
+                title   = "next song debug"
+            })
+        end
         fd:close()
     end),
     awful.key({                   }, "XF86AudioPrev", function()
-        local fd = io.popen("mpc prev")
+        local fd = io.popen('echo "previous" | nc localhost 6600')
+        local response = fd:read("*all")
+        local result = response:match(".*\n(%u+)\n")
+        if not result then
+            naughty.notify({
+                icon    = awful.util.getdir("config") .. "/Icons/warning_64.png",
+                preset  = naughty.config.presets.critical,
+                title   = "prev song debug"
+            })
+        end
         fd:close()
     end),
     awful.key({                   }, "XF86AudioStop", function()
-        local fd = io.popen("mpc stop")
+        local fd = io.popen('echo "stop" | nc localhost 6600')
+        local response = fd:read("*all")
+        local result = response:match(".*\n(%u+)\n")
+        if not result then
+            naughty.notify({
+                icon    = awful.util.getdir("config") .. "/Icons/warning_64.png",
+                preset  = naughty.config.presets.critical,
+                title   = "stop song debug"
+            })
+        end
         fd:close()
     end),
     awful.key({                   }, "XF86AudioPlay", function()
-        local fd = io.popen("mpc toggle")
+        local fd = io.popen('echo "status" | nc localhost 6600')
+        local response = fd:read("*all")
+        local state = response:match("state: (%l+)")
+        fd:close()
+        local action = ""
+        if state == "stop" then action = "play" end
+        if state == "pause" then action = "play" end
+        if state == "play" then action = "pause 1" end
+        local fd = io.popen('echo "' .. action .. '" | nc localhost 6600')
+        local response = fd:read("*all")
+        local result = response:match(".*\n(%u+)\n")
+        if not result then
+            naughty.notify({
+                icon    = awful.util.getdir("config") .. "/Icons/warning_64.png",
+                preset  = naughty.config.presets.critical,
+                title   = "pause song debug"
+            })
+        end
+        fd:close()
+    end),
+    awful.key({                   }, "XF86AudioLowerVolume", function()
+        local fd = io.popen('echo "status" | nc localhost 6600')
+        local response = fd:read("*all")
+        local volume = tonumber(response:match("volume: (%d+)"))
+        fd:close()
+        volume = volume - 2
+        if volume < 0 then volume = 0 end
+        local fd = io.popen('echo "setvol ' .. volume .. '" | nc localhost 6600')
+        local response = fd:read("*all")
+        local result = response:match(".*\n(%u+)\n")
+        if not result then
+            naughty.notify({
+                icon    = awful.util.getdir("config") .. "/Icons/warning_64.png",
+                preset  = naughty.config.presets.critical,
+                title   = "pause song debug"
+            })
+        end
+        fd:close()
+    end),
+    awful.key({                   }, "XF86AudioRaiseVolume", function()
+        local fd = io.popen('echo "status" | nc localhost 6600')
+        local response = fd:read("*all")
+        local volume = tonumber(response:match("volume: (%d+)"))
+        fd:close()
+        volume = volume + 2
+        if volume > 100 then volume = 100 end
+        local fd = io.popen('echo "setvol ' .. volume .. '" | nc localhost 6600')
+        local response = fd:read("*all")
+        local result = response:match(".*\n(%u+)\n")
+        if not result then
+            naughty.notify({
+                icon    = awful.util.getdir("config") .. "/Icons/warning_64.png",
+                preset  = naughty.config.presets.critical,
+                title   = "pause song debug"
+            })
+        end
         fd:close()
     end)
+    -- }}}
+    -- }}}
 )
 
 
