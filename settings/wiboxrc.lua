@@ -206,19 +206,23 @@ local naughty = require("naughty")
 
     volicon:buttons(awful.util.table.join(
         awful.button({ }, 4, function ()
-            awful.util.spawn("amixer set Master 1%+")
+            local fd = io.popen("amixer set Master 1%+")
+            fd:close()
             update_volume(volwidget,volicon)
         end),
         awful.button({ }, 5, function () 
-            awful.util.spawn("amixer set Master 1%-")
+            local fd = io.popen("amixer set Master 1%-")
+            fd:close()
             update_volume(volwidget,volicon)
         end),
         awful.button({"Shift"}, 4, function ()
-            awful.util.spawn("amixer set Master 10%+")
+            local fd = io.popen("amixer set Master 10%+")
+            fd:close()
             update_volume(volwidget,volicon)
         end),
         awful.button({"Shift"}, 5, function () 
-            awful.util.spawn("amixer set Master 10%-")
+            local fd = io.popen("amixer set Master 10%-")
+            fd:close()
             update_volume(volwidget,volicon)
         end),
         awful.button({ }, 2, function () 
