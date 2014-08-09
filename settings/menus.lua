@@ -1,7 +1,7 @@
 local awful = require("awful")
 local beautiful = require("beautiful")
 local menubar = require("menubar")
-require("localdata.autogen_menus")
+require("localdata.menus")
 -- Create a laucher widget and a main menu
 -- Menus {{{
 myawesomemenu = {
